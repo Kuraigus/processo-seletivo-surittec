@@ -1,7 +1,7 @@
 package com.surittec.springboot.controller;
 
-import com.surittec.springboot.model.dto.ClientDto;
-import com.surittec.springboot.services.ClientServices;
+import com.surittec.springboot.model.dto.AddressDto;
+import com.surittec.springboot.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/clientes")
-public class ClientController {
+@RequestMapping("/address")
+public class AddressController {
 
-    private final ClientServices clientServices;
+    private final AddressService addressService;
 
     @Autowired
-    public ClientController(ClientServices clientServices) {
-        this.clientServices = clientServices;
+    public AddressController(AddressService addressService) {
+        this.addressService = addressService;
     }
 
     @PostMapping
-    public ResponseEntity<ClientDto> createClient(@RequestBody final ClientDto clientDTO) {
+    public ResponseEntity<AddressDto> createAddress(@RequestBody final AddressDto addressDto) {
 
     }
 

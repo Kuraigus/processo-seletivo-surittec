@@ -1,5 +1,7 @@
 package com.surittec.springboot.model;
 
+import com.surittec.springboot.model.dto.PhoneDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -9,11 +11,11 @@ public class Phone {
 
     @Column(name = "TYPE")
     @NotNull(message = "Tipo do telefone obrigatorio")
-    private String tipo;
+    private String type;
 
     @Column(name = "NUMBER")
     @NotNull(message = "Numero do telefone obrigatorio")
-    private String numero;
+    private String number;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,24 +25,31 @@ public class Phone {
     public Phone() {
     }
 
-    public Phone(String tipo, String numero) {
-        this.tipo = tipo;
-        this.numero = numero;
+    public static Phone from(PhoneDto phoneDto) {
+        Phone phone = new Phone();
+        phone.setNumber(phoneDto.getNumber());
+        phone.setType(phoneDto.getType());
+        return phone;
     }
 
-    public String getTipo() {
-        return tipo;
+    public Phone(String type, String number) {
+        this.type = type;
+        this.number = number;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public String getType() {
+        return type;
     }
 
-    public String getNumero() {
-        return numero;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }

@@ -1,50 +1,36 @@
-package com.surittec.springboot.model;
+package com.surittec.springboot.model.dto;
 
-import javax.persistence.*;
+import com.surittec.springboot.model.Address;
+
 import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "ADDRESS")
-public class Address {
-
-    @Column(name = "CEP")
+public class AddressDto {
     @NotNull(message = "CEP obrigatorio")
     private String cep;
 
-    @Column(name = "STREET")
     @NotNull(message = "Rua obrigatorio")
     private String street;
 
-    @Column(name = "NEIGHBORHOOD")
     @NotNull(message = "Bairro obrigatorio")
     private String neighborhood;
 
-    @Column(name = "CITY")
     @NotNull(message = "Cidade obrigatorio")
     private String city;
 
-    @Column(name = "STATE")
     @NotNull(message = "UF obrigatorio")
     private String state;
 
-    @Column(name = "COMPLEMENT")
     private String complement;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
-
-    public Address() {
-    }
-
-    public Address(String cep, String street, String neighborhood, String city, String state, String complement) {
-        this.cep = cep;
-        this.street = street;
-        this.neighborhood = neighborhood;
-        this.city = city;
-        this.state = state;
-        this.complement = complement;
+    public static AddressDto from(Address address) {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setCep(address.getCep());
+        addressDto.setCity(address.getCity());
+        addressDto.setComplement(address.getComplement());
+        addressDto.setNeighborhood(address.getNeighborhood());
+        addressDto.setState(address.getState());
+        addressDto.setStreet(address.getStreet());
+        return addressDto;
     }
 
     public String getCep() {
@@ -94,4 +80,6 @@ public class Address {
     public void setComplement(String complement) {
         this.complement = complement;
     }
+
+
 }

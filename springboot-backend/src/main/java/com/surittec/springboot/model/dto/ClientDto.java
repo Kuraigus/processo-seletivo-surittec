@@ -1,66 +1,40 @@
-package com.surittec.springboot.model;
+package com.surittec.springboot.model.dto;
 
-import javax.persistence.*;
+import com.surittec.springboot.model.Address;
+import com.surittec.springboot.model.Client;
+import com.surittec.springboot.model.Phone;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "CLIENT")
-public class Client {
-    @Column(name = "EMAIL")
-    @ElementCollection
+public class ClientDto {
+
     @Size(min = 1, message = "Pelo menos 1 email deve ser registrado")
     private List<String> emails;
 
-    @Column(name = "CPF")
     @NotNull(message = "Nome obrigatorio")
     private String cpf;
 
-    @Column(name = "NAME")
     @Size(min = 3, max = 100)
     @NotNull(message = "Nome obrigatorio")
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
     @NotNull(message = "Endereco obrigatorio")
     private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
     @Size(min = 1, message = "Pelo menos 1 numero deve ser registrado")
     private List<Phone> phones = new ArrayList<>();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
-    public Client() {
-    }
-
-    public Client(List<String> emails, String cpf, String name, Address address) {
-        this.emails = emails;
-        this.cpf = cpf;
-        this.name = name;
-        this.address = address;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public void addPhone(Phone phone) {
-        phones.add(phone);
-    }
-
-    public void removePhone(Phone phone) {
-        phones.remove(phone);
+    public static ClientDto from(Client client) {
+        ClientDto clientDto = new ClientDto();
+        clientDto.setEmails(client.getEmails());
+        clientDto.setName(client.getName());
+        clientDto.setCpf(client.getCpf());
+        clientDto.setAddress(client.getAddress());
+        return clientDto;
     }
 
     public List<String> getEmails() {
@@ -85,5 +59,21 @@ public class Client {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 }
