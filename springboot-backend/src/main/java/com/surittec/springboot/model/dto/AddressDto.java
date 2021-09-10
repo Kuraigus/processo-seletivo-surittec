@@ -5,6 +5,9 @@ import com.surittec.springboot.model.Address;
 import javax.validation.constraints.NotNull;
 
 public class AddressDto {
+
+    private Long id;
+
     @NotNull(message = "CEP obrigatorio")
     private String cep;
 
@@ -24,6 +27,7 @@ public class AddressDto {
 
     public static AddressDto from(Address address) {
         AddressDto addressDto = new AddressDto();
+        addressDto.setId(address.getId());
         addressDto.setCep(address.getCep());
         addressDto.setCity(address.getCity());
         addressDto.setComplement(address.getComplement());
@@ -31,6 +35,14 @@ public class AddressDto {
         addressDto.setState(address.getState());
         addressDto.setStreet(address.getStreet());
         return addressDto;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCep() {

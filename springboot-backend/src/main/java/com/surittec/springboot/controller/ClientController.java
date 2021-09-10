@@ -64,10 +64,4 @@ public class ClientController {
         Client client = clientServices.removePhoneFromClient(clientId, phoneId);
         return new ResponseEntity<>(ClientDto.from(client), HttpStatus.OK);
     }
-
-    @PostMapping(value = "{clientId}/address/{addressId}/add")
-    public ResponseEntity<ClientDto> addAddressToClient(@PathVariable final Long clientId, @PathVariable final Long addressId) throws Exception {
-        Client client = clientServices.addAddressToClient(clientId, addressId);
-        return new ResponseEntity<>(ClientDto.from(client), HttpStatus.OK);
-    }
 }

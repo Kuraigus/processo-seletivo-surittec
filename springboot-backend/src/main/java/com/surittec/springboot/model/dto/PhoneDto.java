@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 
 public class PhoneDto {
 
+    private Long id;
+
     @NotNull(message = "Tipo do telefone obrigatorio")
     private String type;
 
@@ -14,11 +16,20 @@ public class PhoneDto {
 
     public static PhoneDto from(Phone phone) {
         PhoneDto phoneDto = new PhoneDto();
+        phoneDto.setId(phone.getId());
         phoneDto.setNumber(phone.getNumber());
         phoneDto.setType(phone.getType());
         return phoneDto;
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getType() {
         return type;

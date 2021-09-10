@@ -8,8 +8,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientDto {
+
+    private Long id;
 
     @Size(min = 1, message = "Pelo menos 1 email deve ser registrado")
     private List<String> emails;
@@ -25,15 +28,17 @@ public class ClientDto {
     private Address address;
 
     @Size(min = 1, message = "Pelo menos 1 numero deve ser registrado")
-    private List<Phone> phones = new ArrayList<>();
+    private List<PhoneDto> phones = new ArrayList<>();
 
 
     public static ClientDto from(Client client) {
         ClientDto clientDto = new ClientDto();
+        clientDto.setId(client.getId());
         clientDto.setEmails(client.getEmails());
         clientDto.setName(client.getName());
         clientDto.setCpf(client.getCpf());
         clientDto.setAddress(client.getAddress());
+        clientDto.setPhones(client.getPhones().stream().map(PhoneDto::from).collect(Collectors.toList()));
         return clientDto;
     }
 
@@ -43,6 +48,14 @@ public class ClientDto {
 
     public void setEmails(List<String> emails) {
         this.emails = emails;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCpf() {
@@ -69,11 +82,11 @@ public class ClientDto {
         this.address = address;
     }
 
-    public List<Phone> getPhones() {
+    public List<PhoneDto> getPhones() {
         return phones;
     }
 
-    public void setPhones(List<Phone> phones) {
+    public void setPhones(List<PhoneDto> phones) {
         this.phones = phones;
     }
 }

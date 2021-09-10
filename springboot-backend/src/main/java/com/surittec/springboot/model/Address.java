@@ -33,7 +33,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
 
     public Address() {
@@ -57,6 +57,14 @@ public class Address {
         this.city = city;
         this.state = state;
         this.complement = complement;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCep() {

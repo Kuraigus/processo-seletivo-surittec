@@ -1,13 +1,15 @@
 package com.surittec.springboot.model;
 
-import com.surittec.springboot.model.dto.AddressDto;
+
 import com.surittec.springboot.model.dto.ClientDto;
+import com.surittec.springboot.model.dto.PhoneDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "CLIENT")
@@ -27,18 +29,18 @@ public class Client {
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "id")
     @NotNull(message = "Endereco obrigatorio")
     private Address address;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "PHONE_ID", referencedColumnName = "id")
     @Size(min = 1, message = "Pelo menos 1 numero deve ser registrado")
     private List<Phone> phones = new ArrayList<>();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     public Client() {
     }
@@ -49,6 +51,7 @@ public class Client {
         client.setName(clientDto.getName());
         client.setCpf(clientDto.getCpf());
         client.setAddress(clientDto.getAddress());
+        client.setPhones(clientDto.getPhones().stream().map(Phone::from).collect(Collectors.toList()));
         return client;
     }
 
@@ -60,8 +63,24 @@ public class Client {
         this.phones = phone;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Address getAddress() {
         return address;
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 
     public void setAddress(Address address) {
