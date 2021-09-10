@@ -8,6 +8,7 @@ import com.surittec.springboot.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -43,6 +44,7 @@ public class ClientServices {
         return client;
     }
 
+    @Transactional
     public Client updateClient(Long id, Client client) throws Exception {
         Client clientToEdit = getClientById(id);
         clientToEdit.setEmails(client.getEmails());
@@ -52,6 +54,7 @@ public class ClientServices {
         return clientToEdit;
     }
 
+    @Transactional
     public Client addPhoneToClient(Long clientId, Long phoneid) throws Exception {
         Client client = getClientById(clientId);
         Phone phone = phoneService.getPhoneById(phoneid);
@@ -59,6 +62,7 @@ public class ClientServices {
         return client;
     }
 
+    @Transactional
     public Client removePhoneFromClient(Long clientId, Long phoneId) throws Exception {
         Client client = getClientById(clientId);
         Phone phone = phoneService.getPhoneById(phoneId);
@@ -66,6 +70,7 @@ public class ClientServices {
         return client;
     }
 
+    @Transactional
     public Client addAddressToClient(Long clientId, Long addressId) throws Exception{
         Client client = getClientById(clientId);
         Address address = addressService.getAddressById(addressId);

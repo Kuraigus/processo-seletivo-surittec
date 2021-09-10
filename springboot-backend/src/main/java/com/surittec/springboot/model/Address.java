@@ -1,5 +1,6 @@
 package com.surittec.springboot.model;
 
+import com.surittec.springboot.model.dto.AddressDto;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -36,6 +37,17 @@ public class Address {
 
 
     public Address() {
+    }
+
+    public static Address from(AddressDto addressDto) {
+        Address address = new Address();
+        address.setStreet(addressDto.getStreet());
+        address.setState(addressDto.getState());
+        address.setNeighborhood(addressDto.getNeighborhood());
+        address.setComplement(addressDto.getComplement());
+        address.setCity(addressDto.getCity());
+        address.setCep(addressDto.getCep());
+        return address;
     }
 
     public Address(String cep, String street, String neighborhood, String city, String state, String complement) {

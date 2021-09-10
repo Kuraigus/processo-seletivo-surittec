@@ -8,6 +8,8 @@ import com.surittec.springboot.repository.PhoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class PhoneService {
 
@@ -36,6 +38,7 @@ public class PhoneService {
         return phone;
     }
 
+    @Transactional
     public Phone updatePhone(Long id, Phone phone) throws Exception {
         Phone phoneToEdit = getPhoneById(id);
         phoneToEdit.setNumber(phone.getNumber());

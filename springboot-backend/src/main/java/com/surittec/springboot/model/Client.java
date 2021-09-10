@@ -1,5 +1,8 @@
 package com.surittec.springboot.model;
 
+import com.surittec.springboot.model.dto.AddressDto;
+import com.surittec.springboot.model.dto.ClientDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -40,11 +43,21 @@ public class Client {
     public Client() {
     }
 
-    public Client(List<String> emails, String cpf, String name, Address address) {
+    public static Client from(ClientDto clientDto) {
+        Client client = new Client();
+        client.setEmails(clientDto.getEmails());
+        client.setName(clientDto.getName());
+        client.setCpf(clientDto.getCpf());
+        client.setAddress(clientDto.getAddress());
+        return client;
+    }
+
+    public Client(List<String> emails, String cpf, String name, Address address, List<Phone> phone) {
         this.emails = emails;
         this.cpf = cpf;
         this.name = name;
         this.address = address;
+        this.phones = phone;
     }
 
     public Address getAddress() {
