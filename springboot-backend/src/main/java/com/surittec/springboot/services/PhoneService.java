@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 @Service
 public class PhoneService {
@@ -20,7 +21,7 @@ public class PhoneService {
         this.phoneRepository = phoneRepository;
     }
 
-    public Phone addPhone(Phone phone) {
+    public Phone addPhone(@Valid Phone phone) {
         return phoneRepository.save(phone);
     }
 
@@ -32,14 +33,13 @@ public class PhoneService {
         return phoneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Telefone com id: " + id + " nao encontrado"));
     }
 
-    public Phone deletePhone(Long id) throws Exception {
+    public void deletePhone(Long id) throws Exception {
         Phone phone = getPhoneById(id);
         phoneRepository.delete(phone);
-        return phone;
     }
 
     @Transactional
-    public Phone updatePhone(Long id, Phone phone) throws Exception {
+    public Phone updatePhone(Long id, @Valid Phone phone) throws Exception {
         Phone phoneToEdit = getPhoneById(id);
         phoneToEdit.setNumber(phone.getNumber());
         phoneToEdit.setType(phone.getType());

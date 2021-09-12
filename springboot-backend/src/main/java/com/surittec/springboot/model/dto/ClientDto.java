@@ -2,8 +2,8 @@ package com.surittec.springboot.model.dto;
 
 import com.surittec.springboot.model.Address;
 import com.surittec.springboot.model.Client;
-import com.surittec.springboot.model.Phone;
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -15,12 +15,14 @@ public class ClientDto {
     private Long id;
 
     @Size(min = 1, message = "Pelo menos 1 email deve ser registrado")
-    private List<String> emails;
+    private List<@Email(message = "Informe um email valido") String> emails;
 
-    @NotNull(message = "Nome obrigatorio")
+    @NotNull(message = "CPF obrigatorio")
+    @NotEmpty(message = "CPF nao pode ser vazio")
+    @Size(min = 11, max = 11, message = "CPF tem requer no minimo e no maximo 11 caracteres ")
     private String cpf;
 
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 100, message = "Nome requer no minimo 3 caracteres")
     @NotNull(message = "Nome obrigatorio")
     private String name;
 

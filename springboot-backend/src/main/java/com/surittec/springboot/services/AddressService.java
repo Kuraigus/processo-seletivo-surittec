@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -18,7 +19,7 @@ public class AddressService {
         this.addressRepository = addressRepository;
     }
 
-    public Address addAddress(Address address) {
+    public Address addAddress(@Valid Address address) {
         return addressRepository.save(address);
     }
 
@@ -30,14 +31,13 @@ public class AddressService {
         return addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Endereco com id: " + id + " nao encontrado"));
     }
 
-    public Address deleteAddress(Long id) throws Exception {
+    public void deleteAddress(Long id) throws Exception {
         Address address = getAddressById(id);
         addressRepository.delete(address);
-        return address;
     }
 
     @Transactional
-    public Address updateAddress(Long id, Address address) throws Exception {
+    public Address updateAddress(Long id, @Valid Address address) throws Exception {
         Address addressToEdit = getAddressById(id);
         addressToEdit.setCep(address.getCep());
         addressToEdit.setCity(address.getCity());

@@ -1,7 +1,6 @@
 package com.surittec.springboot.services;
 
 import com.surittec.springboot.exception.ResourceNotFoundException;
-import com.surittec.springboot.model.Address;
 import com.surittec.springboot.model.Client;
 import com.surittec.springboot.model.Phone;
 import com.surittec.springboot.repository.ClientRepository;
@@ -9,25 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
 public class ClientServices {
 
     private ClientRepository clientRepository;
-    private AddressService addressService;
     private PhoneService phoneService;
 
     @Autowired
-    public ClientServices(ClientRepository clientRepository, AddressService addressService, PhoneService phoneService) {
+    public ClientServices(ClientRepository clientRepository, PhoneService phoneService) {
         this.clientRepository = clientRepository;
-        this.addressService = addressService;
         this.phoneService = phoneService;
     }
 
 
-    public Client addClient(Client client) {
-        return clientRepository.save(client);
+    public Client addClient(@Valid Client client) {
+            return clientRepository.save(client);
     }
 
     public List<Client> getClients() {
@@ -38,14 +36,13 @@ public class ClientServices {
         return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente com id: " + id + " nao encontrado"));
     }
 
-    public Client deleteClient(Long id) throws Exception {
+    public void deleteClient(Long id) throws Exception {
         Client client = getClientById(id);
         clientRepository.delete(client);
-        return client;
     }
 
     @Transactional
-    public Client updateClient(Long id, Client client) throws Exception {
+    public Client updateClient(Long id, @Valid Client client) throws Exception {
         Client clientToEdit = getClientById(id);
         clientToEdit.setEmails(client.getEmails());
         clientToEdit.setName(client.getName());
@@ -70,11 +67,4 @@ public class ClientServices {
         return client;
     }
 
-    @Transactional
-    public Client addAddressToClient(Long clientId, Long addressId) throws Exception{
-        Client client = getClientById(clientId);
-        Address address = addressService.getAddressById(addressId);
-        client.setAddress(address);
-        return client;
-    }
 }

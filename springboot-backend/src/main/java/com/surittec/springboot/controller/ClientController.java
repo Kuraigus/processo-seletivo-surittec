@@ -4,16 +4,15 @@ import com.surittec.springboot.model.Client;
 import com.surittec.springboot.model.dto.ClientDto;
 import com.surittec.springboot.services.ClientServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:3000/")
 @RestController
 @RequestMapping("/clientes")
-public class ClientController {
+public class ClientController extends AbstractController {
 
     private final ClientServices clientServices;
 
@@ -23,45 +22,45 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDto> createClient(@RequestBody final ClientDto clientDto) {
-        Client client = clientServices.addClient(Client.from(clientDto));
-        return new ResponseEntity<>(clientDto.from(client), HttpStatus.OK);
+    public ResponseEntity<?> createClient(@RequestBody final ClientDto clientDto) {
+        return buildResponse(() -> clientServices.addClient(Client.from(clientDto)));
     }
 
     @GetMapping
     public ResponseEntity<List<ClientDto>> getClient() {
-        List<Client> clients = clientServices.getClients();
-        List<ClientDto> clientsDto = clients.stream().map(ClientDto::from).collect(Collectors.toList());
-        return new ResponseEntity<>(clientsDto, HttpStatus.OK);
+
+        return buildResponse(() -> {
+            List<Client> clients = clientServices.getClients();
+            List<ClientDto> clientsDto = clients.stream().map(ClientDto::from).collect(Collectors.toList());
+            return clientsDto;
+        });
+
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<ClientDto> getClientById(@PathVariable final Long id) throws Exception{
-        Client client = clientServices.getClientById(id);
-        return new ResponseEntity<>(ClientDto.from(client), HttpStatus.OK);
+    public ResponseEntity<ClientDto> getClientById(@PathVariable final Long id) {
+        return buildResponse(() -> clientServices.getClientById(id));
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<ClientDto> deleteClientById(@PathVariable final Long id) throws Exception {
-        Client client = clientServices.deleteClient(id);
-        return new ResponseEntity<>(ClientDto.from(client), HttpStatus.OK);
+    public ResponseEntity<String> deleteClientById(@PathVariable final Long id) {
+        return buildResponse(() -> clientServices.deleteClient(id));
     }
 
     @PutMapping(value = "{id}")
-    public ResponseEntity<ClientDto> updateClientById(@PathVariable final Long id, @RequestBody final ClientDto clientDto) throws Exception {
-        Client client = clientServices.updateClient(id, Client.from(clientDto));
-        return new ResponseEntity<>(ClientDto.from(client), HttpStatus.OK);
+    public ResponseEntity<ClientDto> updateClientById(@PathVariable final Long id, @RequestBody final ClientDto clientDto) {
+        return buildResponse(() -> clientServices.updateClient(id, Client.from(clientDto)));
+
     }
 
     @PostMapping(value = "{clientId}/phones/{phoneId}/add")
-    public ResponseEntity<ClientDto> addPhoneToClient(@PathVariable final Long clientId, @PathVariable final Long phoneId) throws Exception {
-        Client client = clientServices.addPhoneToClient(clientId, phoneId);
-        return new ResponseEntity<>(ClientDto.from(client), HttpStatus.OK);
+    public ResponseEntity<ClientDto> addPhoneToClient(@PathVariable final Long clientId, @PathVariable final Long phoneId) {
+        return buildResponse(() -> clientServices.addPhoneToClient(clientId, phoneId));
+
     }
 
     @DeleteMapping(value = "{clientId}/phones/{phoneId}/remove")
-    public ResponseEntity<ClientDto> removePhoneFromClient(@PathVariable final Long clientId, @PathVariable final Long phoneId) throws Exception {
-        Client client = clientServices.removePhoneFromClient(clientId, phoneId);
-        return new ResponseEntity<>(ClientDto.from(client), HttpStatus.OK);
+    public ResponseEntity<ClientDto> removePhoneFromClient(@PathVariable final Long clientId, @PathVariable final Long phoneId) {
+        return buildResponse(() -> clientServices.removePhoneFromClient(clientId, phoneId));
     }
 }

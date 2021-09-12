@@ -2,38 +2,43 @@ package com.surittec.springboot.model;
 
 
 import com.surittec.springboot.model.dto.ClientDto;
-import com.surittec.springboot.model.dto.PhoneDto;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Entity
 @Table(name = "CLIENT")
 public class Client {
+
     @Column(name = "EMAIL")
     @ElementCollection
     @Size(min = 1, message = "Pelo menos 1 email deve ser registrado")
-    private List<String> emails;
+    private List<@Email(message = "Informe um email valido") String> emails;
 
     @Column(name = "CPF")
-    @NotNull(message = "Nome obrigatorio")
+    @NotNull(message = "CPF obrigatorio")
+    @NotEmpty(message = "CPF nao pode ser vazio")
+    @Size(min = 11, max = 11, message = "CPF tem requer no minimo e no maximo 11 caracteres ")
     private String cpf;
 
     @Column(name = "NAME")
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 100, message = "Nome requer no minimo 3 caracteres")
     @NotNull(message = "Nome obrigatorio")
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "id")
     @NotNull(message = "Endereco obrigatorio")
     private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "PHONE_ID", referencedColumnName = "id")
     @Size(min = 1, message = "Pelo menos 1 numero deve ser registrado")
     private List<Phone> phones = new ArrayList<>();
