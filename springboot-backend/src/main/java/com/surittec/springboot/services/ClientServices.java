@@ -67,4 +67,18 @@ public class ClientServices {
         return client;
     }
 
+    @Transactional
+    public Client addEmailToClient(Long clientId, String email) throws Exception {
+        Client client = getClientById(clientId);
+        client.addEmail(email);
+        return client;
+    }
+
+    @Transactional
+    public Client removeEmailFromClient(Long clientId, String email) throws Exception {
+        Client client = getClientById(clientId);
+        client.removeEmail(email);
+        return client;
+    }
+
 }

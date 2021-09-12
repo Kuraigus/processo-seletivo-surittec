@@ -1,13 +1,15 @@
 package com.surittec.springboot.controller;
 
+import com.surittec.springboot.converters.PhoneConverter;
 import com.surittec.springboot.model.Phone;
-import com.surittec.springboot.model.dto.PhoneDto;
+import com.surittec.springboot.dto.PhoneDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.surittec.springboot.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,31 +24,34 @@ public class PhoneController extends AbstractController{
     }
 
     @PostMapping
-    public ResponseEntity<PhoneDto> createPhone(@RequestBody final PhoneDto phoneDto) {
-        return buildResponse(() -> phoneService.addPhone(Phone.from(phoneDto)));
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PhoneDTO> createPhone(@RequestBody final PhoneDTO phoneDto) {
+        return buildResponse(() -> phoneService.addPhone(PhoneConverter.convertPhoneDTOTOPhone(phoneDto)));
     }
 
     @GetMapping
-    public ResponseEntity<List<PhoneDto>> getPhones() {
+    public ResponseEntity<List<PhoneDTO>> getPhones() {
         return buildResponse(() -> {
             List<Phone> phones = phoneService.getPhones();
-            List<PhoneDto> phonesDto = phones.stream().map(PhoneDto::from).collect(Collectors.toList());
+            List<PhoneDTO> phonesDto = phones.stream().map(PhoneConverter::convertPhoneToPhoneDTO).collect(Collectors.toList());
             return phonesDto;
         });
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<PhoneDto> getPhoneById(@PathVariable final Long id) {
+    public ResponseEntity<PhoneDTO> getPhoneById(@PathVariable final Long id) {
         return buildResponse(() -> phoneService.getPhoneById(id));
     }
 
     @DeleteMapping(value = "{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deletePhoneById(@PathVariable final Long id) {
         return buildResponse(() -> phoneService.deletePhone(id));
     }
 
     @PutMapping(value = "{id}")
-    public ResponseEntity<PhoneDto> updatePhoneById(@PathVariable final Long id, @RequestBody final PhoneDto phoneDto) {
-        return buildResponse(() -> phoneService.updatePhone(id, Phone.from(phoneDto)));
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PhoneDTO> updatePhoneById(@PathVariable final Long id, @RequestBody final PhoneDTO phoneDto) {
+        return buildResponse(() -> phoneService.updatePhone(id, PhoneConverter.convertPhoneDTOTOPhone(phoneDto)));
     }
 }

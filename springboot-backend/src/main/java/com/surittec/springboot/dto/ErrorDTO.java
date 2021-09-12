@@ -1,14 +1,14 @@
-package com.surittec.springboot.model.dto;
+package com.surittec.springboot.dto;
 
 import java.util.List;
 
-public class ErrorDto {
+public class ErrorDTO {
 
         private String message;
         private String cause;
         private List<String> violations;
 
-        public ErrorDto(String message, String cause, List<String> violations) {
+        public ErrorDTO(String message, String cause, List<String> violations) {
             this.message = message;
             this.cause = cause;
             this.violations = violations;
